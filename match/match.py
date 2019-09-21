@@ -1,6 +1,9 @@
 from typing import Dict, List, Any, Callable, Union
 
-class Ob:    
+class Ob: 
+    """
+    This class is a wrapper class for non-functional objects.
+    """   
     def __init__(self, value : Any):
         if callable(value):
             raise SyntaxError("Do not wrap functions. Use Fn object instead!")
@@ -11,6 +14,9 @@ class Ob:
         return self.value
 
 class Fn:
+    """
+    This class is a wrapper class for functions with their full set of parameters.
+    """
     def __init__(self, action : Callable, *args, **kwargs):
         def process():
             return action(*args, **kwargs)
@@ -20,12 +26,23 @@ class Fn:
         return self.process()
 
 class Case:
+    """
+    This class is a wrapper class of bool.
+    The purpose to create this class is to enable bool-returning expressions
+    to become separate keys in a dictionary
+    even if the returned bool value is same.
+    """
     def __init__(self, condition : bool):
         self.condition = condition
 
 class Pattern:
+    """
+    This class is a wrapper class of a pair of Case and Fn/Ob objects.
+    The purpose to create this class is to enable match function
+    to accept list data.
+    """
     def __init__(self, condition : bool, result, *args, **kwargs):
-        self.case = Case(condition)
+        self.case   = Case(condition)
         self.result = Fn(result, *args, **kwargs) if callable(result) else Ob(result)
 
 def match(senarios : Union[List[Pattern], Dict[Case, Union[Ob, Fn]]]):
