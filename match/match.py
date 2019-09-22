@@ -3,6 +3,7 @@ from typing import Dict, List, Any, Callable, Union
 class Ob: 
     """
     This class is a wrapper class for non-functional objects.
+    It is used as a value in the dictionary with Case key.
     """   
     def __init__(self, value : Any):
         if callable(value):
@@ -16,9 +17,15 @@ class Ob:
 class Fn:
     """
     This class is a wrapper class for functions with their full set of parameters.
+    It is used as a value in the dictionary with Case key.
     """
     def __init__(self, action : Callable, *args, **kwargs):
         def process():
+            """
+            The actual process is wrapped in the inner function.
+            It is evaluated inside the match function
+            when the corresponding Case key returns True.
+            """
             return action(*args, **kwargs)
         self.process = process
 
