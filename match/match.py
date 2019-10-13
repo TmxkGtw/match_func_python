@@ -49,8 +49,12 @@ class Pattern:
     to accept list data.
     """
     def __init__(self, condition : bool, result, *args, **kwargs):
-        self.case   = Case(condition)
-        self.result = Fn(result, *args, **kwargs) if callable(result) else Ob(result)
+        self.case = Case(condition)
+
+        if callable(result):
+            self.result = Fn(result, *args, **kwargs)
+        else:
+            self.result = Ob(result)
 
 def match(senarios : Union[List[Pattern], Dict[Case, Union[Ob, Fn]]]):
     """
@@ -58,7 +62,10 @@ def match(senarios : Union[List[Pattern], Dict[Case, Union[Ob, Fn]]]):
              That is because, dict order is not preserved before 3.6.
     """
     if type(senarios) is list:
-        happenable_senarios = {pattern.case : pattern.result for pattern in senarios}.items()
+        happenable_senarios = {
+            pattern.case : pattern.result 
+            for pattern in senarios
+        }.items()
     else:
         happenable_senarios = senarios.items()
 
