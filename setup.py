@@ -11,7 +11,10 @@ setup(
         "match function inspired by V language"
     ),
     long_description = (
-        "match function replaces original if-elseif operator."
+        """
+        match function replaces original if-elseif operator.
+        it requires python 3.7 or newer.
+        """
     ),
     requires = (
         "Python 3.7 or newer"
